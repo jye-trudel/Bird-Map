@@ -1,0 +1,384 @@
+<!--
+  Jye Trudel
+  Vedansh Tandon
+  Singapore American School
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bird Life in Singapore</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQhNYQ4PLT3Nub9w8g9lsQINCBp5r7cSc"></script>
+    <script>
+      var map;
+      var markers = [];
+      var birdLocations = [
+        {
+          name: "Sungei Buloh Wetland Reserve",
+          lat: 1.447836,
+          lng: 103.724126,
+          desc: "Asian Fairy-bluebird", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Asian_fairy-bluebird>More Info</a>",
+          img: "https://i.ibb.co/ZfP9QTq/Asian-Fairy-bluebird.jpg",
+        },
+        {
+          name: "Sungei Buloh Wetland Reserve",
+          lat: 1.446349,
+          lng: 103.725757,
+          desc: "Common Redshank", desc2: "Population Trend: Unknown", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Common_redshank>More Info</a>",
+          img: "https://i.ibb.co/WBnpppY/download.jpg",
+        },
+        {
+          name: "Sungei Buloh Wetland Reserve",
+          lat: 1.446167,
+          lng: 103.72274,
+          desc: "Eurasian Whimbrel", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Eurasian_whimbrel>More Info</a>",
+          img: "https://i.ibb.co/WkQSzXz/220px-Whimbrel-Lee-Point-Reserve.jpg",
+        },
+        {
+          name: "Sungei Buloh Wetland Reserve",
+          lat: 1.447286,
+          lng: 103.719853,
+          desc: "Lesser sand plover", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Lesser_sand_plover>More Info</a>",
+          img: "https://i.ibb.co/q9zpjRT/lesser-sand-plover-fy1x3968-114eos1d-140223.webp",
+        },
+        {
+          name: "Sungei Buloh Wetland Reserve",
+          lat: 1.448133,
+          lng: 103.728404,
+          desc: "Stork-billed kingfisher", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Stork-billed_kingfisher>More Info</a>",
+          img: "https://i.ibb.co/2n4L8Nq/stork-billed-kingfisher-200813-099canon-062a3310-n.webp",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.4041,
+          lng: 103.9792,
+          desc: "Asian Koel", desc2: "Population Trend: Increasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Asian_Koel>More Info</a>",
+          img: "https://i.ibb.co/r7Nm55x/coucou-koel-roba-1p-200-w.jpg",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.419933,
+          lng: 103.933035,
+          desc: "Oriental pied hornbill", desc2: "Population Trend: Stable", end: "Endangerment Level: Critical", link: "<a href=https://en.wikipedia.org/wiki/Oriental_pied_hornbill>More Info</a>",
+          img: "https://i.ibb.co/dQzppTS/Great-hornbill4414-Normal-200.jpg",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.426135,
+          lng: 103.935814,
+          desc: "Brown-throated sunbird", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Brown-throated_sunbird>More Info</a>",
+          img: "https://i.ibb.co/fnwX4LQ/souimanga-a-gorge-brune-roba-1p-200-w.jpg",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.417458,
+          lng: 103.954991, 
+          desc: "White-rumped woodpecker", desc2: "Population Trend: Decreasing", end: "Endangerment Level: Moderate", link: "<a href=https://en.wikipedia.org/wiki/White-rumped_woodpecker>More Info</a>",
+          img: "https://i.ibb.co/NxrPtkK/download-1.jpg",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.407686,
+          lng: 103.964485,
+          desc: "Ruby-cheeked sunbird", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Ruby-cheeked_sunbird>More Info</a>",
+          img: "https://i.ibb.co/5jgxC3n/Screenshot-2023-01-26-at-2-19-18-PM.png",
+        },
+        {
+          name: "Pulau Ubin",
+          lat: 1.407461,
+          lng: 103.957573,
+          desc: "Black-and-red broadbill", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Black-and-red_broadbill>More Info</a>",
+          img: "https://i.ibb.co/s3NTC1P/download-2.jpg",
+        },
+        {
+          name: "MacRitchie Reservoir",
+          lat: 1.3521,
+          lng: 103.8198,
+          desc: "Asian Paradise-flycatcher", desc2: "Population Trend: Stable", end: "Endangerment Level: Moderate", link: "<a href=https://en.wikipedia.org/wiki/Asian_Paradise-flycatcher>More Info</a>",
+          img: "https://i.ibb.co/4pYhgSd/download-3.jpg",
+        },
+        {
+          name: "MacRitchie Reservoir",
+          lat: 1.343277,
+          lng: 103.817884,
+          desc: "Common emerald dove", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Common_emerald_dove>More Info</a>",
+          img: "https://www.oiseaux.net/photos/robert.balestra/images/colombine.turvert.roba.1p.200.w.jpg",
+        },
+        {
+          name: "MacRitchie Reservoir",
+          lat: 1.347989,
+          lng: 103.821269,
+          desc: "Blue-throated bee-eater", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Blue-throated_bee-eater>More Info</a>",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Blue-throated_Bee-eater_Courtship_offering.jpg/258px-Blue-throated_Bee-eater_Courtship_offering.jpg",
+        },
+        {
+          name: "MacRitchie Reservoir",
+          lat: 1.347912,
+          lng: 103.829046,
+          desc: "Orange-bellied flowerpecker", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Orange-bellied_flowerpecker>More Info</a>",
+          img: "https://i.pinimg.com/200x/fe/f3/7d/fef37daac3aa60b532d254827623ac80.jpg",
+        },
+        {
+          name: "MacRitchie Reservoir",
+          lat: 1.344019,
+          lng: 103.835237,
+          desc: "Crimson sunbird", desc2: "Population Trend: Stable", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Crimson_sunbird>More Info</a>",
+          img: "https://i.pinimg.com/200x/38/cf/4f/38cf4f13e51007a7b703a3c5b2b624ff.jpg",
+        },
+        {
+          name: "Bukit Timah Nature Reserve",
+          lat: 1.3524,
+          lng: 103.7857,
+          desc: "Black-naped Oriole", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Black-naped_Oriole>More Info</a>",
+          img: "https://i.ibb.co/bWYL3Rd/download-4.jpg",
+        },
+        {
+          name: "Pasir Ris Park",
+          lat: 1.3762,
+          lng: 103.9485,
+          desc: "Laced Woodpecker", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Laced_Woodpecker>More Info</a>",
+          img: "https://cdn.download.ams.birds.cornell.edu/api/v1/asset/62324581/320",
+        },
+        {
+          name: "Singapore Botanic Gardens",
+          lat: 1.3138,
+          lng: 103.8159,
+          desc: "Common Tailor Bird", desc2: "Population Trend: Decreasing", end: "Endangerment Level: No Concern", link: "<a href=https://en.wikipedia.org/wiki/Common_Tailorbird>More Info</a>",
+          img: "https://www.ecologyasia.com/images-cd/common-tailorbird_5087.jpg",
+        },
+      ];
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 10,
+          center: { lat: 1.3521, lng: 103.8198 },
+        });
+
+        birdLocations.forEach(function (location) {
+          var marker = new google.maps.Marker({
+            position: { lat: location.lat, lng: location.lng },
+            map: map,
+            title: location.name,
+          });
+          markers.push(marker);
+          var infowindow = new google.maps.InfoWindow({
+            content: `
+          <div>
+            <h3>${location.name}</h3>
+            <img src="${location.img}">
+            <p>${location.desc}</p>
+            <p>${location.desc2}</p>
+            <p>${location.end}</p>
+            <p>${location.link}</p>
+          </div>
+          `,
+          });
+          marker.addListener("click", function () {
+            infowindow.open(map, marker);
+          });
+        });
+      }
+    </script>
+    <style>
+      #sidebar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 250px;
+        background: #f5f5f5;
+        overflow-y: auto;
+        padding: 15px;
+      }
+      #map {
+        position: center;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 280px;
+        top: 0px;
+        size: 500%;
+        border-radius: 3px;
+      }
+      .bird-btn {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #ddd;
+        cursor: pointer;
+      }
+      #search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      #search-input {
+        padding: 10px;
+        border: none;
+        flex-grow: 1;
+      }
+      #search-button {
+        padding: 10px;
+        background: #ddd;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body onload="initMap()">
+    <div id="sidebar">
+      <h2>Singapore Bird Species</h2>
+      <button class="bird-btn" id="AsianFairy-bluebird">
+        Asian Fairy-bluebird
+      </button>
+      <button class="bird-btn" id="AsianKoel">Asian Koel</button>
+      <button class="bird-btn" id="AsianParadise-flycatcher">
+        Asian Paradise-flycatcher
+      </button>
+      <button class="bird-btn" id="Black-napedOriole">
+        Black-naped Oriole
+      </button>
+      <button class="bird-btn" id="LacedWoodpecker">Laced Woodpecker</button>
+      <button class="bird-btn" id="CommonTailorbird">Common Tailor Bird</button>
+      <button class="bird-btn" id="CommonRedshank">Common Redshank</button>
+      <button class="bird-btn" id="EurasianWhimbrel">Eurasian Whimbrel</button>
+      <button class="bird-btn" id="LesserSandPlover">Lesser Sand Plover</button>
+      <button class="bird-btn" id="Stork-billedKingfisher">
+        Stork-billed Kingfisher
+      </button>
+      <button class="bird-btn" id="OrientalPiedHornbill">
+        Oriental pied hornbill
+      </button>
+      <button class="bird-btn" id="Brown-throatedSunbird">
+        Brown-throated sunbird
+      </button>
+      <button class="bird-btn" id="White-rumpedWoodpecker">
+        White-rumped Woodpecker
+      </button>
+      <button class="bird-btn" id="Ruby-cheekedSunbird">
+        Ruby-cheeked Sunbird
+      </button>
+      <button class="bird-btn" id="Black-and-redBroadbill">
+        Black-and-red Broadbill
+      </button>
+      <button class="bird-btn" id="CommonEmeraldDove">
+        Common Emerald Dove
+      </button>
+      <button class="bird-btn" id="Blue-throatedBee-eater">
+        Blue-throated Bee-eater
+      </button>
+      <button class="bird-btn" id="Orange-belliedFlowerpecker">
+        Orange-bellied Flowerpecker
+      </button>
+      <button class="bird-btn" id="CrimsonSunbird">Crimson Sunbird</button>
+    </div>
+    <div id="map" style="height: 848px; width: 83%"></div>
+    <div
+      style="text-align: center;position: absolute;bottom: 0;width: 100%; top: 800px;">
+      <a href="https://sites.google.com/sas.edu.sg/birdwatcher/home">
+        <button class="bird-btn">
+          Google sites for more info about project
+        </button>
+      </a>
+    </div>
+    <script>
+      document
+        .getElementById("AsianFairy-bluebird")
+        .addEventListener("click", function () {
+          centerMap(1.447836, 103.724126,);
+        });
+      document
+        .getElementById("AsianKoel")
+        .addEventListener("click", function () {
+          centerMap(1.4041, 103.9792);
+        });
+      document
+        .getElementById("AsianParadise-flycatcher")
+        .addEventListener("click", function () {
+          centerMap(1.3521, 103.8198);
+        });
+      document
+        .getElementById("Black-napedOriole")
+        .addEventListener("click", function () {
+          centerMap(1.3524, 103.7857);
+        });
+      document
+        .getElementById("LacedWoodpecker")
+        .addEventListener("click", function () {
+          centerMap(1.3762, 103.9485);
+        });
+      document
+        .getElementById("CommonTailorbird")
+        .addEventListener("click", function () {
+          centerMap(1.3138, 103.8159);
+        });
+      document
+        .getElementById("CommonRedshank")
+        .addEventListener("click", function () {
+          centerMap(1.446349, 103.725757);
+        });
+      document
+        .getElementById("EurasianWhimbrel")
+        .addEventListener("click", function () {
+          centerMap(1.446167, 103.72274);
+        });
+      document
+        .getElementById("LesserSandPlover")
+        .addEventListener("click", function () {
+          centerMap(1.447286, 103.719853);
+        });
+      document
+        .getElementById("Stork-billedKingfisher")
+        .addEventListener("click", function () {
+          centerMap(1.448133, 103.728404);
+        });
+      document
+        .getElementById("OrientalPiedHornbill")
+        .addEventListener("click", function () {
+          centerMap(1.419933, 103.933035);
+        });
+      document
+        .getElementById("Brown-throatedSunbird")
+        .addEventListener("click", function () {
+          centerMap(1.426135, 103.935814);
+        });
+      document
+        .getElementById("White-rumpedWoodpecker")
+        .addEventListener("click", function () {
+          centerMap(1.417458, 103.954991);
+        });
+      document
+        .getElementById("Ruby-cheekedSunbird")
+        .addEventListener("click", function () {
+          centerMap(1.407686, 103.964485);
+        });
+      document
+        .getElementById("Black-and-redBroadbill")
+        .addEventListener("click", function () {
+          centerMap(1.407461, 103.957573);
+        });
+      document
+        .getElementById("CommonEmeraldDove")
+        .addEventListener("click", function () {
+          centerMap(1.343277, 103.817884);
+        });
+      document
+        .getElementById("Blue-throatedBee-eater")
+        .addEventListener("click", function () {
+          centerMap(1.347989, 103.821269);
+        });
+      document
+        .getElementById("Orange-belliedFlowerpecker")
+        .addEventListener("click", function () {
+          centerMap(1.347912, 103.829046);
+        });
+      document
+        .getElementById("CrimsonSunbird")
+        .addEventListener("click", function () {
+          centerMap(1.344019, 103.835237);
+        });
+      function centerMap(lat, lng) {
+        map.setCenter({ lat: lat, lng: lng });
+      }
+    </script>
+  </body>
+</html>
